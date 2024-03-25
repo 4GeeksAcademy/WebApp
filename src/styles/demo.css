@@ -1,0 +1,14 @@
+.cards {
+  text-align: left;
+}
+.card-body {
+  display: flex;
+  justify-content: center;
+}
+button {
+  box-shadow: 0px 0px 10px 0px rgba(14, 12, 21, 0.5);
+}
+
+body {
+  background-color: #f4f6f7d3;
+}

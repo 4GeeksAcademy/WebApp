@@ -1,25 +1,36 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 
 import { Context } from "../store/appContext";
 
 import "../../styles/demo.css";
 
-export const Demo = () => {
+export const EditForm = () => {
   const { store, actions } = useContext(Context);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState(""); 
-  const [phone, setPhone] = useState("");
- 
-  const handleSubmit = e => {
+  const [name, setName] = useState("ejemplo");
+  const [email, setEmail] = useState("ejemplo@hotmail.com");
+  const [address, setAddress] = useState("ejemplo");
+  const [phone, setPhone] = useState("123456");
+  const { id } = useParams();
+
+  useEffect(() => {
+    actions.getSingleContact(id);
+  }, []);
+
+  useEffect(() => {
+    setName(store.contact.full_name);
+    setEmail(store.contact.email);
+    setAddress(store.contact.address);
+    setPhone(store.contact.phone);
+  }, [store.contact]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    actions.creatContact(name, email, address, phone);
-	setName("");
-	setEmail("");
-	setAddress("");
-	setPhone("");
-	
+    actions.editContact(name, email, address, phone, id);
+    setName("");
+    setEmail("");
+    setAddress("");
+    setPhone("");
   };
 
   return (
@@ -52,7 +63,7 @@ export const Demo = () => {
             placeholder="Enter your email"
           />
         </div>
-		<div className="mb-3">
+        <div className="mb-3">
           <label htmlFor="exampleInputEmail1" className="form-label">
             Address{" "}
           </label>
@@ -80,19 +91,16 @@ export const Demo = () => {
             placeholder="Enter your phone number"
           />
         </div>
-       
 
         <button type="submit" className="btn btn-primary">
           {" "}
           Submit{" "}
         </button>
+
         <Link to="/">
         <button type="button" style={{marginLeft:'10px'}} class="btn btn-outline-secondary">Back home</button>
-      </Link>
+        </Link>
       </form>
-      
-
-      
     </div>
   );
 };
